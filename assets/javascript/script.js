@@ -24,7 +24,7 @@ var getWeather = function(cityName) {
 
                 var cityInfo = document.createElement("div");
                 cityInfo.classList = "h2"
-                cityInfo.textContent = cityName + Date() + "icon";
+                cityInfo.textContent = cityName + Date() + "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png";
 
                 var temp = document.createElement("p")
                 temp.textContent = data.current.temp
