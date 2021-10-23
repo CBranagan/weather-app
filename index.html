@@ -19,22 +19,32 @@
 
     <div class="container">
     <div class="row">
-      <div class="col-3">sometiing
-      <form></form>
+      <div class="col-3 d-grid gap-3">
+        <div class="mb-3 border-bottom border-secondary border-3">
+            <label for="city-search" class="form-label fw-bold fs-2">Search For a City:</label>
+            <input type="text" class="form-control" id="city" placeholder="Enter City">
+            <div class="d-grid gap-2">
+            <button type="button" class="btn btn-info">Search</button>
+            </div>
+        </div>
         <div id="searches">
           <ul id="search-list">
-              <li>previous search</li>
+            <div class="card">
+                <div class="card-body bg-secondary fw-bold">
+                  Previous Searches
+                </div>
+              </div>
           </ul>
         </div>
         </div>
-        <div class="col-9">something
+        <div class="col-9">
             <div class="row">
-                <div class="col-12">
+                <div class="col-12" id="weather-box">
                 <ul id="weather">
                     <li>current temp</li>
                 </ul>
                 </div>
-                <div class="col-12">
+                <div class="col-12" id="forecast-box">
                     <div class="card" style="width: 18rem;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
