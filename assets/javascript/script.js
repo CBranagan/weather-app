@@ -1,6 +1,9 @@
 var searchButton = document.getElementById("search-button");
 var searchName = document.getElementById("city");
 var weatherBox = document.getElementById("weather-box");
+var searches = document.getElementById("searches");
+var searchNumber = 0;
+var forecastBox = document.getElementById("forecast-box");
 
 
 
@@ -41,6 +44,8 @@ var getWeather = function(Lat, Lng, cityName) {
 
                 console.log(data)
 
+                //display Current Weather
+
                 var cityInfo = document.createElement("div");
                 cityInfo.classList = "h2"
                 cityInfo.textContent = cityName + " " + moment().format("MM DD YYYY")
@@ -48,13 +53,13 @@ var getWeather = function(Lat, Lng, cityName) {
                 weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png");
 
                 var temp = document.createElement("p")
-                temp.textContent = "Temp: " + data.current.temp + "F"
+                temp.textContent = "Temp: " + data.current.temp + " F"
 
                 var wind = document.createElement("p")
-                wind.textContent = "Wind: " + data.current.wind_speed
+                wind.textContent = "Wind: " + data.current.wind_speed + " MPH"
 
                 var humidity = document.createElement("p")
-                humidity.textContent = "Humidity: " + data.current.humidity
+                humidity.textContent = "Humidity: " + data.current.humidity + " %"
 
                 var uvIndex = document.createElement("p")
                 uvIndex.textContent = "UV Index: " + data.current.uvi
@@ -68,6 +73,45 @@ var getWeather = function(Lat, Lng, cityName) {
                 }
 
 
+                //make 5 day forecast
+
+                for (var i=0; i < 5; i++) {
+
+                    var dayCard = document.createElement("div");
+                    dayCard.classList = "card bg-primary"
+                    dayCard.setAttribute("style", "width: 12rem");
+
+                    var dayDate = document.createElement("h3")
+                    dayDate.textContent = moment(1).format("MM DD YYYY")
+                    dayDate.classList = "text-light"
+
+
+                    var dayIcon = document.createElement("img");
+                    dayIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.daily[i].weather[0].icon + ".png")
+                    dayIcon.classList = "card-img-top"
+
+                    var dayTemp = document.createElement("p");
+                    dayTemp.textContent = "Temp: " + data.daily[i].temp.day + " F"
+                    dayTemp.classList = "text-light"
+
+                    var dayWind = document.createElement("p");
+                    dayWind.textContent = "Wind: " + data.daily[i].wind_speed + " MPH"
+                    dayWind.classList = "text-light"
+
+                    var dayHumidity = document.createElement("p")
+                    dayHumidity.textContent = "Humidity: " + data.daily[i].humidity + " %"
+                    dayHumidity.classList = "text-light"
+
+                    dayCard.appendChild(dayDate)
+                    dayCard.appendChild(dayIcon)
+                    dayCard.appendChild(dayTemp)
+                    dayCard.appendChild(dayWind)
+                    dayCard.appendChild(dayHumidity)
+                    forecastBox.appendChild(dayCard)
+
+                }
+
+
 
                 cityInfo.appendChild(weatherIcon)
                 weatherBox.appendChild(cityInfo)
@@ -75,6 +119,22 @@ var getWeather = function(Lat, Lng, cityName) {
                 weatherBox.appendChild(wind)
                 weatherBox.appendChild(humidity)
                 weatherBox.appendChild(uvIndex)
+
+                var previousSearch = document.createElement("div")
+                previousSearch.classList = "card"
+                previousSearch.setAttribute("data-search", searchNumber)
+                var previousSearch2 = document.createElement("div")
+                previousSearch2.classList = "card-body bg-secondary fw-bold"
+                previousSearch2.textContent = cityName
+
+
+                previousSearch.appendChild(previousSearch2)
+                searches.appendChild(previousSearch)
+
+                searchNumber++
+                console.log(searchNumber)
+
+                
 
             })
         } else {
