@@ -4,7 +4,7 @@ var weatherBox = document.getElementById("weather-box");
 
 
 
-// mapquest key 6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s
+
 
 var formSubmit = function() {
     event.preventDefault();
@@ -16,10 +16,14 @@ var formSubmit = function() {
             
             var Lat = data.results[0].locations[0].displayLatLng.lat
             var Lng = data.results[0].locations[0].displayLatLng.lng
+
+            cityName = data.results[0].locations[0].adminArea5 + ", " + data.results[0].locations[0].adminArea3
+
+            console.log(data)
             
             getWeather(Lat, Lng, cityName);
 
-            searchName = ""
+            searchName.value = ""
         })
     })
  
@@ -35,14 +39,16 @@ var getWeather = function(Lat, Lng, cityName) {
         if(response.ok) {
             response.json().then(function(data) {
 
+                console.log(data)
+
                 var cityInfo = document.createElement("div");
                 cityInfo.classList = "h2"
-                cityInfo.textContent = cityName + new Date() 
+                cityInfo.textContent = cityName + " " + moment().format("MM DD YYYY")
                 var weatherIcon = document.createElement("img");
                 weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png");
 
                 var temp = document.createElement("p")
-                temp.textContent = "Temp: " + data.current.temp
+                temp.textContent = "Temp: " + data.current.temp + "F"
 
                 var wind = document.createElement("p")
                 wind.textContent = "Wind: " + data.current.wind_speed
@@ -70,8 +76,6 @@ var getWeather = function(Lat, Lng, cityName) {
                 weatherBox.appendChild(humidity)
                 weatherBox.appendChild(uvIndex)
 
-                
-                console.log(data)
             })
         } else {
             alert("No City Found")
