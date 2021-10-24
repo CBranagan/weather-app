@@ -4,9 +4,36 @@ var weatherBox = document.getElementById("weather-box");
 var searches = document.getElementById("searches");
 var searchNumber = 0;
 var forecastBox = document.getElementById("forecast-box");
+var searchList = [];
 
+var searchAudit = function() {
 
+    var newSearchList = localStorage.getItem("cityList");
 
+    var searchList2 = JSON.parse(newSearchList)
+
+    if (searchList2 === null) {
+      
+        return;
+
+    } else {
+
+    for (var i=0; i < searchList2.length; i++) {
+
+        var previousSearch = document.createElement("div")
+        previousSearch.classList = "card"
+        
+        var previousSearch2 = document.createElement("div")
+        previousSearch2.classList = "card-body bg-secondary fw-bold"
+        previousSearch2.textContent = searchList2[i]
+
+        
+        previousSearch.appendChild(previousSearch2)
+        searches.appendChild(previousSearch)
+    }
+
+    console.log(searchList2)
+}}
 
 
 var formSubmit = function() {
@@ -26,6 +53,11 @@ var formSubmit = function() {
             
             getWeather(Lat, Lng, cityName);
 
+            searchList.push(cityName);
+            
+            localStorage.setItem("cityList", JSON.stringify(searchList))
+
+
             searchName.value = ""
         })
     })
@@ -37,12 +69,11 @@ var formSubmit = function() {
 var getWeather = function(Lat, Lng, cityName) {
 
     weatherBox.textContent = "";
+    forecastBox.textContent = "";
     
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + Lat + "&lon=" + Lng + "&units=imperial&appid=91e1c438834c5e3d640330c8336046a5").then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
-
-                console.log(data)
 
                 //display Current Weather
 
@@ -71,6 +102,15 @@ var getWeather = function(Lat, Lng, cityName) {
                 } else {
                     uvIndex.classList = "bg-danger"
                 }
+
+
+                cityInfo.appendChild(weatherIcon)
+                weatherBox.appendChild(cityInfo)
+                weatherBox.appendChild(temp)
+                weatherBox.appendChild(wind)
+                weatherBox.appendChild(humidity)
+                weatherBox.appendChild(uvIndex)
+
 
 
                 //make 5 day forecast
@@ -113,26 +153,21 @@ var getWeather = function(Lat, Lng, cityName) {
 
 
 
-                cityInfo.appendChild(weatherIcon)
-                weatherBox.appendChild(cityInfo)
-                weatherBox.appendChild(temp)
-                weatherBox.appendChild(wind)
-                weatherBox.appendChild(humidity)
-                weatherBox.appendChild(uvIndex)
+
+                //create a previous search element
 
                 var previousSearch = document.createElement("div")
                 previousSearch.classList = "card"
-                previousSearch.setAttribute("data-search", searchNumber)
+                
                 var previousSearch2 = document.createElement("div")
                 previousSearch2.classList = "card-body bg-secondary fw-bold"
                 previousSearch2.textContent = cityName
 
-
+                
                 previousSearch.appendChild(previousSearch2)
                 searches.appendChild(previousSearch)
 
-                searchNumber++
-                console.log(searchNumber)
+                
 
                 
 
@@ -143,4 +178,6 @@ var getWeather = function(Lat, Lng, cityName) {
     })
 };
 
+
+searchAudit();
 searchButton.addEventListener("click", formSubmit);
