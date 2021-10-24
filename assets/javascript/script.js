@@ -32,11 +32,33 @@ var searchAudit = function() {
         searches.appendChild(previousSearch)
     }
 
-    console.log(searchList2)
+    searchList = searchList2
 }}
 
 
-var formSubmit = function() {
+var reSubmitForm = function(event) {
+    event.preventDefault();
+
+    var cityName = event.target.textContent;
+
+    fetch("http://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+        response.json().then(function(data) {
+            
+            var Lat = data.results[0].locations[0].displayLatLng.lat
+            var Lng = data.results[0].locations[0].displayLatLng.lng
+
+            cityName = data.results[0].locations[0].adminArea5 + ", " + data.results[0].locations[0].adminArea3
+
+            console.log(data)
+            
+            getWeather(Lat, Lng, cityName);
+
+        })
+    })
+
+}
+
+var formSubmit = function(cityName) {
     event.preventDefault();
 
     var cityName = searchName.value.trim();
@@ -56,6 +78,19 @@ var formSubmit = function() {
             searchList.push(cityName);
             
             localStorage.setItem("cityList", JSON.stringify(searchList))
+
+             //create a previous search element
+
+             var previousSearch = document.createElement("div")
+             previousSearch.classList = "card"
+             
+             var previousSearch2 = document.createElement("div")
+             previousSearch2.classList = "card-body bg-secondary fw-bold"
+             previousSearch2.textContent = cityName
+
+             
+             previousSearch.appendChild(previousSearch2)
+             searches.appendChild(previousSearch)
 
 
             searchName.value = ""
@@ -122,7 +157,7 @@ var getWeather = function(Lat, Lng, cityName) {
                     dayCard.setAttribute("style", "width: 12rem");
 
                     var dayDate = document.createElement("h3")
-                    dayDate.textContent = moment(1).format("MM DD YYYY")
+                    dayDate.textContent = moment().add([i + 1], 'd').format("MM DD YYYY")
                     dayDate.classList = "text-light"
 
 
@@ -150,34 +185,17 @@ var getWeather = function(Lat, Lng, cityName) {
                     forecastBox.appendChild(dayCard)
 
                 }
-
-
-
-
-                //create a previous search element
-
-                var previousSearch = document.createElement("div")
-                previousSearch.classList = "card"
-                
-                var previousSearch2 = document.createElement("div")
-                previousSearch2.classList = "card-body bg-secondary fw-bold"
-                previousSearch2.textContent = cityName
-
-                
-                previousSearch.appendChild(previousSearch2)
-                searches.appendChild(previousSearch)
-
-                
-
-                
-
+               
             })
         } else {
-            alert("No City Found")
+            document.location.replace("./index.html")
         }
     })
 };
 
 
 searchAudit();
+
 searchButton.addEventListener("click", formSubmit);
+
+searches.addEventListener("click", reSubmitForm);
