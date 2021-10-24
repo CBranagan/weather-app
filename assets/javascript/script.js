@@ -3,10 +3,24 @@ var searchName = document.getElementById("city");
 var weatherBox = document.getElementById("weather-box");
 
 
+
+// mapquest key 6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s
+
 var formSubmit = function() {
     event.preventDefault();
 
     var cityName = searchName.value.trim();
+
+    fetch("http://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+        response.json().then(function(data) {
+            
+            var cityLat = data.results[0].locations[0].displayLatLng.lat
+            var cityLng = data.results[0].locations[0].displayLatLng.lng
+            console.log(data.results[0].locations[0].displayLatLng.lat)
+            console.log(data.results[0].locations[0].displayLatLng.lng)
+
+        })
+    })
 
     getWeather(cityName);
     
