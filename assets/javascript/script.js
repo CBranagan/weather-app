@@ -14,43 +14,44 @@ var formSubmit = function() {
     fetch("http://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
         response.json().then(function(data) {
             
-            var cityLat = data.results[0].locations[0].displayLatLng.lat
-            var cityLng = data.results[0].locations[0].displayLatLng.lng
-            console.log(data.results[0].locations[0].displayLatLng.lat)
-            console.log(data.results[0].locations[0].displayLatLng.lng)
+            var Lat = data.results[0].locations[0].displayLatLng.lat
+            var Lng = data.results[0].locations[0].displayLatLng.lng
+            
+            getWeather(Lat, Lng, cityName);
 
+            searchName = ""
         })
     })
-
-    getWeather(cityName);
-    
+ 
 }
 
 
 
-var getWeather = function(cityName) {
+var getWeather = function(Lat, Lng, cityName) {
 
     weatherBox.textContent = "";
     
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=40.56&lon=111.92&units=imperial&appid=91e1c438834c5e3d640330c8336046a5").then(function(response) {
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + Lat + "&lon=" + Lng + "&units=imperial&appid=91e1c438834c5e3d640330c8336046a5").then(function(response) {
         if(response.ok) {
             response.json().then(function(data) {
 
                 var cityInfo = document.createElement("div");
                 cityInfo.classList = "h2"
-                cityInfo.textContent = cityName + Date() + "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png";
+                cityInfo.textContent = cityName + new Date() 
+                var weatherIcon = document.createElement("img");
+                weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png");
 
                 var temp = document.createElement("p")
-                temp.textContent = data.current.temp
+                temp.textContent = "Temp: " + data.current.temp
 
                 var wind = document.createElement("p")
-                wind.textContent = data.current.wind_speed
+                wind.textContent = "Wind: " + data.current.wind_speed
 
                 var humidity = document.createElement("p")
-                humidity.textContent = data.current.humidity
+                humidity.textContent = "Humidity: " + data.current.humidity
 
                 var uvIndex = document.createElement("p")
-                uvIndex.textContent = data.current.uvi
+                uvIndex.textContent = "UV Index: " + data.current.uvi
 
                 if (data.current.uvi < 1) {
                     uvIndex.classList = "bg-success"
@@ -62,7 +63,7 @@ var getWeather = function(cityName) {
 
 
 
-                
+                cityInfo.appendChild(weatherIcon)
                 weatherBox.appendChild(cityInfo)
                 weatherBox.appendChild(temp)
                 weatherBox.appendChild(wind)
