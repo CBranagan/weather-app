@@ -41,7 +41,7 @@ var reSubmitForm = function(event) {
 
     var cityName = event.target.textContent;
 
-    fetch("http://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+    fetch("https://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
         response.json().then(function(data) {
             
             var Lat = data.results[0].locations[0].displayLatLng.lat
@@ -63,7 +63,7 @@ var formSubmit = function(cityName) {
 
     var cityName = searchName.value.trim();
 
-    fetch("http://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+    fetch("https://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
         response.json().then(function(data) {
             
             var Lat = data.results[0].locations[0].displayLatLng.lat
