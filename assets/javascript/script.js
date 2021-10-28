@@ -41,15 +41,13 @@ var reSubmitForm = function(event) {
 
     var cityName = event.target.textContent;
 
-    fetch("https://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=91e1c438834c5e3d640330c8336046a5").then(function(response) {
         response.json().then(function(data) {
             
-            var Lat = data.results[0].locations[0].displayLatLng.lat
-            var Lng = data.results[0].locations[0].displayLatLng.lng
+            var Lat = data.coord.lat
+            var Lng = data.coord.lon
 
-            cityName = data.results[0].locations[0].adminArea5 + ", " + data.results[0].locations[0].adminArea3
-
-            console.log(data)
+            cityName = data.name
             
             getWeather(Lat, Lng, cityName);
 
@@ -63,15 +61,15 @@ var formSubmit = function(cityName) {
 
     var cityName = searchName.value.trim();
 
-    fetch("https://www.mapquestapi.com/geocoding/v1/address?key=6KQdhx6MI0WFXgA4tp6Jwmgd0HCqaj1s&location=" + cityName).then(function(response) {
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=91e1c438834c5e3d640330c8336046a5").then(function(response) {
         response.json().then(function(data) {
             
-            var Lat = data.results[0].locations[0].displayLatLng.lat
-            var Lng = data.results[0].locations[0].displayLatLng.lng
+            
+            var Lat = data.coord.lat
+            var Lng = data.coord.lon
 
-            cityName = data.results[0].locations[0].adminArea5 + ", " + data.results[0].locations[0].adminArea3
+            cityName = data.name
 
-            console.log(data)
             
             getWeather(Lat, Lng, cityName);
 
